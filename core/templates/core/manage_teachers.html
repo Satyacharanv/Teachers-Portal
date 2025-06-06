@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Teachers</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+<div class="container white-bg">
+    <h2>Manage Teachers</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Add Teacher Form -->
+    <form method="POST" action="{% url 'register' %}" style="margin-bottom: 30px;">
+        {% csrf_token %}
+        <h3>Add New Teacher</h3>
+        <label>Username:</label><br>
+        <input type="text" name="username" required><br><br>
+
+        <label>Password:</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <label>Confirm Password:</label><br>
+        <input type="password" name="confirm_password" required><br><br>
+
+        <label>Assign to Classroom:</label><br>
+        <select name="classroom" style="margin-top: 10px;" required>
+            {% for cls in classrooms %}
+                <option value="{{ cls.id }}">{{ cls.name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit">Add Teacher</button>
+    </form>
+
+    <!-- Existing Teachers Table -->
+    <h3>Existing Teachers</h3>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Classroom</th>
+            <th>Actions</th>
+        </tr>
+        {% for teacher in teachers %}
+        <tr>
+            <form method="POST" action="{% url 'update_teacher' teacher.id %}">
+                {% csrf_token %}
+                <td><input type="text" name="username" value="{{ teacher.username }}" required></td>
+                <td>
+                    <select name="classroom">
+                        {% for cls in classrooms %}
+                            <option value="{{ cls.id }}" {% if cls.id == teacher.classroom.id %}selected{% endif %}>{{ cls.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <button type="submit">Update</button>
+            </form>
+            <form method="POST" action="{% url 'delete_teacher' teacher.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</button>
+            </form>
+                </td>  
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="{% url 'home' %}"><button>Back to Dashboard</button></a>
+</div>
+</body>
+</html>

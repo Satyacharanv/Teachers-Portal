@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Classrooms</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+    <div class="container white-bg">
+        <h2>Manage Classrooms</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="error">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" style="margin-bottom: 30px;">
+            {% csrf_token %}
+            <label>Classroom Name:</label><br><br>
+            <input type="text" style="margin-bottom: 20px;" name="name" placeholder="Enter classroom name" required>
+            <button type="submit">Add Classroom</button>
+        </form>
+
+        <h3>Existing Classrooms</h3>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Classroom Name</th>
+            </tr>
+            {% for cls in classrooms %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ cls.name }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No classrooms yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <br>
+        <a href="{% url 'home' %}"><button>Back to Dashboard</button></a>
+    </div>
+</body>
+</html>

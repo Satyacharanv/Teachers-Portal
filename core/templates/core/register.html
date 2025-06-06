@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Registration</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+<div class="login-container">
+    <div class="form-card">
+        <h2>Register as Teacher</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="error">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            <label>Username:</label><br>
+            <input type="text" name="username" required><br><br>
+
+            <label>Password:</label><br>
+            <input type="password" name="password" required><br><br>
+
+            <label>Confirm Password:</label><br>
+            <input type="password" name="confirm_password" required><br><br>
+
+            <label>Classroom:</label><br>
+            <select name="classroom" required>
+                {% for cls in classrooms %}
+                    <option value="{{ cls.id }}">{{ cls.name }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <button type="submit">Register</button>
+        </form>
+        <br>
+        <a href="{% url 'login' %}">Back to login</a>
+    </div>
+</div>
+</body>
+</html>

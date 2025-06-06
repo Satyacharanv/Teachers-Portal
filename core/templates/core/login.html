@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Login</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="form-card">
+            <h2 style="text-align: center; color: red;">tailwebs.</h2>
+            {% if messages %}
+                {% for msg in messages %}
+                    <p class="error">{{ msg }}</p>
+                {% endfor %}
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <label>Username:</label><br>
+                <input type="text" name="username" required><br><br>
+
+                <label>Password:</label><br>
+                <input type="password" name="password" required><br><br>
+
+                <button type="submit">Login</button>
+            </form>
+            <div style="margin-top: 20px; text-align: center;">
+                <p>Don't have an account?</p>
+                <a href="{% url 'register' %}">
+                    <button style="background-color: #2ecc71;">Register as Teacher</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
